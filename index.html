@@ -1,21 +1,45 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
+    <title>Список задач</title>
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
     <div class="container">
-        <h1>To-Do List</h1>
-        <div class="input-area">
-            <input type="text" id="task-input" placeholder="Введите задачу">
-            <button id="add-btn">Добавить</button>
+        <div class="header-container">
+            <h1>Мой список задач</h1>
+            <button id="themeToggleBtn" class="theme-toggle-btn">
+                <span class="light-icon">☀️</span>
+                <span class="dark-icon">🌙</span>
+            </button>
         </div>
-        <button id="theme-toggle">Темная тема</button>
-        <ul id="task-list"></ul>
+        
+        <div class="todo-input">
+            <input type="text" id="taskInput" placeholder="Добавьте новую задачу...">
+            <button id="addTaskBtn">Добавить</button>
+        </div>
+        
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">Все</button>
+            <button class="filter-btn" data-filter="active">Активные</button>
+            <button class="filter-btn" data-filter="completed">Завершенные</button>
+        </div>
+        
+        <div class="task-instructions">
+            <p>Перетащите задачи, чтобы изменить их порядок. Синяя линия показывает, куда будет помещена задача. Дважды щелкните по тексту задачи для редактирования.</p>
+        </div>
+        
+        <ul id="taskList" class="task-list">
+        </ul>
+        
+        <div class="todo-footer">
+            <span id="taskCounter">0 задач осталось</span>
+            <button id="clearCompletedBtn">Очистить завершенные</button>
+        </div>
     </div>
+    
     <script src="script.js"></script>
 </body>
-</html>
+</html> 

@@ -1,146 +1,313 @@
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    background-color: #f0f0f0;
-    transition: background-color 0.3s;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
 }
 
-body.dark-theme {
-    background-color: #1a1a1a;
-    color: #fff;
+:root {
+    --bg-color: #f5f5f5;
+    --container-bg: #fff;
+    --text-color: #333;
+    --heading-color: #2c3e50;
+    --border-color: #ddd;
+    --hover-bg: #f9f9f9;
+    --primary-color: #3498db;
+    --primary-hover: #2980b9;
+    --delete-color: #e74c3c;
+    --delete-hover: #c0392b;
+    --completed-color: #888;
+    --counter-color: #7f8c8d;
+    --filter-bg: #f8f9fa;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --drag-indicator: rgba(52, 152, 219, 0.3);
+}
+
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --container-bg: #2c2c2c;
+    --text-color: #e0e0e0;
+    --heading-color: #f0f0f0;
+    --border-color: #444;
+    --hover-bg: #3a3a3a;
+    --primary-color: #2980b9;
+    --primary-hover: #3498db;
+    --delete-color: #c0392b;
+    --delete-hover: #e74c3c;
+    --completed-color: #666;
+    --counter-color: #aaa;
+    --filter-bg: #3a3a3a;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --drag-indicator: rgba(41, 128, 185, 0.5);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .container {
-    width: 400px;
-    margin-top: 50px;
-    background-color: white;
-    padding: 20px;
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: var(--container-bg);
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    padding: 20px;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-body.dark-theme .container {
-    background-color: #2c2c2c;
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: var(--heading-color);
+    transition: color 0.3s;
 }
 
-body.dark-theme h1 {
-    color: #fff;
-}
-
-.input-area {
+.theme-toggle-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
     display: flex;
-    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.theme-toggle-btn:hover {
+    background-color: var(--hover-bg);
+}
+
+[data-theme="light"] .dark-icon,
+[data-theme="dark"] .light-icon {
+    display: none;
+}
+
+.todo-input {
+    display: flex;
     margin-bottom: 20px;
 }
 
-#task-input {
+#taskInput {
     flex: 1;
-    padding: 8px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px 0 0 4px;
     font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    transition: border-color 0.3s;
+    background-color: var(--container-bg);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
-body.dark-theme #task-input {
-    background-color: #3c3c3c;
-    color: #fff;
-    border-color: #555;
-}
-
-#add-btn, #theme-toggle {
-    padding: 8px 16px;
-    background-color: #4CAF50;
+#addTaskBtn {
+    padding: 10px 15px;
+    background-color: var(--primary-color);
     color: white;
     border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#addTaskBtn:hover {
+    background-color: var(--primary-hover);
+}
+
+.filter-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    padding: 8px 12px;
+    margin: 0 5px;
+    background-color: var(--filter-bg);
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     cursor: pointer;
+    transition: all 0.3s;
+    color: var(--text-color);
 }
 
-#add-btn:hover, #theme-toggle:hover {
-    background-color: #45a049;
+.filter-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
 }
 
-body.dark-theme #add-btn, body.dark-theme #theme-toggle {
-    background-color: #388e3c;
+.task-instructions {
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: var(--counter-color);
+    text-align: center;
 }
 
-#task-list {
-    list-style: none;
-    padding: 0;
+.task-list {
+    list-style-type: none;
+    margin-bottom: 20px;
+    position: relative;
 }
 
 .task-item {
     display: flex;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ddd;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeIn 0.3s forwards;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s, transform 0.2s;
+    cursor: grab;
+    position: relative;
+    z-index: 1;
 }
 
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.task-item:hover {
+    background-color: var(--hover-bg);
 }
 
-.task-item.removing {
-    animation: fadeOut 0.3s forwards;
+.task-item.dragging {
+    opacity: 0.7;
+    background-color: var(--hover-bg);
+    box-shadow: 0 2px 8px var(--shadow-color);
+    z-index: 10;
+    transform: scale(1.02);
 }
 
-@keyframes fadeOut {
-    to {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
+.task-item.drag-over {
+    border-bottom: 2px solid var(--primary-color);
 }
 
-.task-item.completed span {
-    text-decoration: line-through;
-    color: #888;
+.task-item.drag-over-top {
+    border-top: 2px solid var(--primary-color);
 }
 
-body.dark-theme .task-item {
-    border-bottom: 1px solid #555;
+.drag-indicator {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--primary-color);
+    z-index: 5;
+    pointer-events: none;
 }
 
-body.dark-theme .task-item.completed span {
-    color: #666;
+.drag-indicator.top {
+    top: 0;
 }
 
-.task-item input[type="checkbox"] {
-    margin-right: 10px;
+.drag-indicator.bottom {
+    bottom: 0;
 }
 
-.task-item span {
-    flex: 1;
-    cursor: pointer;
-}
-
-.task-item button {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 5px 10px;
+.task-item-ghost {
+    height: 42px;
+    background-color: var(--drag-indicator);
     border-radius: 4px;
+    margin: 5px 0;
+    border: 2px dashed var(--primary-color);
+}
+
+.task-checkbox {
+    margin-right: 10px;
     cursor: pointer;
 }
 
-.task-item button:hover {
-    background-color: #d32f2f;
+.task-text {
+    flex: 1;
+    word-break: break-word;
+    transition: color 0.3s;
+    padding: 5px;
+    border-radius: 4px;
 }
 
-body.dark-theme .task-item button {
-    background-color: #d32f2f;
+.task-text:hover {
+    background-color: var(--hover-bg);
 }
+
+.task-text.editing {
+    background-color: var(--hover-bg);
+    border: 1px solid var(--border-color);
+    padding: 4px;
+}
+
+.completed .task-text {
+    text-decoration: line-through;
+    color: var(--completed-color);
+}
+
+.task-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.edit-btn, .delete-btn {
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    color: white;
+}
+
+.edit-btn {
+    background-color: var(--primary-color);
+}
+
+.edit-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.delete-btn {
+    background-color: var(--delete-color);
+}
+
+.delete-btn:hover {
+    background-color: var(--delete-hover);
+}
+
+.todo-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+    transition: border-color 0.3s;
+}
+
+#taskCounter {
+    color: var(--counter-color);
+    transition: color 0.3s;
+}
+
+#clearCompletedBtn {
+    background-color: transparent;
+    color: var(--counter-color);
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+#clearCompletedBtn:hover {
+    color: var(--delete-color);
+}
+
+/* Стили для перетаскивания на мобильных устройствах */
+@media (max-width: 768px) {
+    .task-item {
+        cursor: move;
+    }
+    
+    .task-item.dragging {
+        transform: scale(1.01);
+    }
+} 
